@@ -2,7 +2,7 @@ import React from "react";
 
 const SignIn: React.FC = () => {
   return (
-    <div className="flex items-center justify-center h-screen ">
+    <div className="">
       <div className="w-96 bg-[#232323] rounded-lg shadow-xl p-6 ">
         <h2 className="text-2xl font-bold mb-2 text-center text-white">
           Sign In

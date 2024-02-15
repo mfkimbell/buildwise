@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../images/logo.png";
+import logo from "../images/logo.png";
 
 interface HeaderProps {
   title: string;
@@ -9,7 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
     <header
-      style={{ height: "6vh", backgroundColor: "#0D0D0D" }}
+      style={{ height: "6vh", backgroundColor: "#171717" }}
       className="flex items-center justify-between border-b border-white/20 pl-3"
     >
       <div className="flex items-center justify-start">

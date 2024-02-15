@@ -1,6 +1,6 @@
 // HomePage.tsx
 import React from "react";
-import Header from "../Header/Header"; // Adjust the import path as necessary
+import Header from "./Header"; // Adjust the import path as necessary
 
 const Test: React.FC = () => {
   return (

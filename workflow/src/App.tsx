@@ -1,11 +1,13 @@
 import React from "react";
-import "./App.css";
-import "./tailwind.css";
-import HomePage from './components/HomePage/HomePage';
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes"; // Adjust the path as necessary
 
-
-function App() {
-  return <HomePage></HomePage>;
-}
+const App: React.FC = () => {
+  return (
+    <Router>
+      <AppRoutes />
+    </Router>
+  );
+};
 
 export default App;
