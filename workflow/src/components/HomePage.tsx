@@ -11,7 +11,6 @@ const HomePage: React.FC = () => {
     <div className="w-full h-screen flex flex-col bg-[#0D0D0D]">
       <Header
         title="BuildWise"
-        subtitle="Explore our site to learn more about what we offer. We're glad you're here."
       />
       <div className="flex-grow flex flex-col items-center justify-center text-center text-white relative">
         {/* Container for BuildWise and Image */}
@@ -42,10 +41,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
       {/* Footer could go here */}
-      <Routes>
-        <Route path="/scan-project" element={<ScanProjectPage />} />
-        <Route path="/new-project" element={<NewProjectPage />} />
-      </Routes>
+     
     </div>
   );
 };
