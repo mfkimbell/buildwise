@@ -73,28 +73,15 @@ const ScanProjectPage: React.FC = () => {
               isSidePanelCollapsed ? "opacity-0" : "opacity-100"
             }`}
           >
-            {!isSidePanelCollapsed && <div>"Etymology
-
-Goat-herding in Spain.
-
-Goats in Ağrı Mountain, Turkey.
-The Modern English word goat comes from Old English gāt "she-goat, goat in general", which in turn derives from Proto-Germanic *gaitaz (cf. Dutch/Frisian/Icelandic/Norwegian geit, German Geiß, and Gothic gaits), ultimately from Proto-Indo-European *ǵʰaidos meaning "young goat" (cf. Latin haedus "kid").[5] To refer to the male goat, Old English used bucca (cf. Dutch/Frisian bok and giving modern buck) until ousted by hegote, hegoote in the late 12th century. Nanny goat (females) originated in the 18th century, and billy goat (for males) originated in the 19th century.[citation needed]
-
-Female goats are referred to as does or nannies, intact males are called bucks or billies, and juvenile goats of both sexes are called kids. Castrated males are called wethers. While the words hircine and caprine both refer to anything having a goat-like quality, hircine is used most often to emphasize the distinct smell of domestic goats.
-
-History
-Main article: Evolution of domestic goats
-
-Horn cores from the Neolithic village of Atlit Yam
-Goats are among the earliest animals domesticated by humans.[6] The most recent genetic analysis[7] confirms the archaeological evidence that the wild bezoar ibex of the Zagros Mountains is the likely original ancestor of probably all domestic goats today.[6]
-
-
-Skeleton (Capra hircus)
-Neolithic farmers began to herd wild goats primarily for easy access to milk and meat, as well as to their dung, which was used as fuel; and their bones, hair, and sinew were used for clothing, building, and tools.[1] The earliest remnants of domesticated goats dating 10,000 years Before Present are found in Ganj Dareh in Iran.[8] Goat remains have been found at archaeological sites in Jericho, Choga Mami,[9] Djeitun, and Çayönü, dating the domestication of goats in Western Asia at between 8,000 and 9,000 years ago.[6]
-
-Studies of DNA evidence suggests 10,000 years ago as the domestication date.[7]
-
-Historically, goat hide has been used for water and wine bottles in both traveling and transporting wine for sale. It has also been used to produce parchment.[citation needed]"</div>}
+            {!isSidePanelCollapsed && (
+              <div>
+                "Etymology Goat-herding in Spain. Goats in Ağrı Mountain,
+                Turkey. The Modern English word goat comes from Old English gāt
+                "she-goat, goat in general", which in turn derives from
+                Proto-Germanic *gaitaz (cf. Dutch/Frisian/Icelandic/Norwegian
+                geit, German Geiß, and Gothic gaits), ultimately from
+              </div>
+            )}
           </div>
           {/* MUI Button positioned absolutely to be centered and unaffected by panel content */}
           <Button
