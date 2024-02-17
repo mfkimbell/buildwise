@@ -17,18 +17,34 @@ import { initialNodes, initialEdges } from "./nodes-edges";
 import CircleNode from "./CircleNode";
 import RectangleNode from "./RectangleNode";
 import RhombusNode from "./RhombusNode";
+// import { getLayoutedElements, useLayoutedElements, Display } from "./Display";
+import getLayoutedElements from "./Display";
+import useLayoutedElements from "./Display";
 import Display from "./Display";
+import ELK from "elkjs/lib/elk.bundled.js";
 
+const elk = new ELK();
+// const { getLayoutedElements } = useLayoutedElements();
 const NewProjectPage: React.FC = () => {
   const [isSidePanelCollapsed, setIsSidePanelCollapsed] = useState(false);
-  const [config, setConfig] = useState({
-    "elk.algorithm": "layered",
-    "elk.layered.spacing.nodeNodeBetweenLayers": 100,
-    "elk.spacing.nodeNode": 80,
-  });
+  const [layoutOptions, setLayoutOptions] = useState({});
 
   const toggleSidePanel = () => {
     setIsSidePanelCollapsed(!isSidePanelCollapsed);
+  };
+
+  const applyVerticalLayout = () => {
+    setLayoutOptions({
+      "elk.algorithm": "layered",
+      "elk.direction": "DOWN",
+    });
+  };
+
+  const applyHorizontalLayout = () => {
+    setLayoutOptions({
+      "elk.algorithm": "layered",
+      "elk.direction": "RIGHT",
+    });
   };
 
   // Button dimensions
@@ -60,18 +76,8 @@ const NewProjectPage: React.FC = () => {
                     Restructure
                   </h2>
                   <div className="flex flex-col space-y-2 ml-2 mr-2 mb-2">
-                    <button
-                      className="text-sm bg-[#4F46E5] hover:bg-indigo-700 text-white font-bold py-1 px-3 rounded"
-                      onClick={toggleSidePanel}
-                    >
-                      Vertical
-                    </button>
-                    <button
-                      className="text-sm bg-[#4F46E5] hover:bg-indigo-700 text-white font-bold py-1 px-3 rounded"
-                      onClick={toggleSidePanel}
-                    >
-                      Horizontal
-                    </button>
+                    <button onClick={applyVerticalLayout}>Vertical</button>
+                    <button onClick={applyHorizontalLayout}>Horizontal</button>
                     <button
                       className="text-sm bg-[#4F46E5] hover:bg-indigo-700 text-white font-bold py-1 px-2 rounded"
                       onClick={toggleSidePanel}
@@ -118,7 +124,7 @@ const NewProjectPage: React.FC = () => {
           className="flex-grow border border-white/20 bg-white"
           style={{ height: "calc(100vh - 3.3rem)" }}
         >
-          <Display config={config}></Display>
+          <Display layoutOptions={layoutOptions} />
         </div>
       </div>
     </div>

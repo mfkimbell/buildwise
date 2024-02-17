@@ -1,5 +1,5 @@
 import ELK from "elkjs/lib/elk.bundled.js";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   Panel,
@@ -13,7 +13,7 @@ import "reactflow/dist/style.css";
 
 const elk = new ELK();
 
-const useLayoutedElements = ({ config }) => {
+const useLayoutedElements = () => {
   const { getNodes, setNodes, getEdges, fitView } = useReactFlow();
   const defaultOptions = {
     "elk.algorithm": "layered",
@@ -48,14 +48,15 @@ const useLayoutedElements = ({ config }) => {
   return { getLayoutedElements };
 };
 
-const LayoutFlow = ({ config }) => {
+const LayoutFlow = ({ layoutOptions })  => {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
-  const { getLayoutedElements } = useLayoutedElements(config);
+  const { getLayoutedElements } = useLayoutedElements();
 
- 
-  
-  console.log(config, "config");
+  useEffect(() => {
+    // Call the function to apply the layout with the current layoutOptions
+    getLayoutedElements(layoutOptions);
+  }, [layoutOptions]);
 
   return (
     <ReactFlow
@@ -109,11 +110,10 @@ const LayoutFlow = ({ config }) => {
   );
 };
 
-function Display({ config }) {
-  
+function Display({ layoutOptions }) {
   return (
     <ReactFlowProvider>
-      <LayoutFlow config={config} />
+      <LayoutFlow layoutOptions={layoutOptions} />
     </ReactFlowProvider>
   );
 }
