@@ -17,12 +17,15 @@ import { initialNodes, initialEdges } from "./nodes-edges";
 import CircleNode from "./CircleNode";
 import RectangleNode from "./RectangleNode";
 import RhombusNode from "./RhombusNode";
-import App from "./App";
+import Display from "./Display";
 
 const NewProjectPage: React.FC = () => {
   const [isSidePanelCollapsed, setIsSidePanelCollapsed] = useState(false);
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [config, setConfig] = useState({
+    "elk.algorithm": "layered",
+    "elk.layered.spacing.nodeNodeBetweenLayers": 100,
+    "elk.spacing.nodeNode": 80,
+  });
 
   const toggleSidePanel = () => {
     setIsSidePanelCollapsed(!isSidePanelCollapsed);
@@ -51,15 +54,42 @@ const NewProjectPage: React.FC = () => {
             }`}
           >
             {!isSidePanelCollapsed && (
-              <div>
-                "Etymology Goat-herding in Spain. Goats in Ağrı Mountain,
-                Turkey. The Modern English word goat comes from Old English gāt
-                "she-goat, goat in general", which in turn derives from
-                Proto-Germanic *gaitaz (cf. Dutch/Frisian/Icelandic/Norwegian
-                geit, German Geiß, and Gothic gaits), ultimately from
+              <div className="w-full flex flex-col">
+                <div className="border border-white/20">
+                  <h2 className="text-lg font-semibold mb-2 ml-2">
+                    Restructure
+                  </h2>
+                  <div className="flex flex-col space-y-2 ml-2 mr-2 mb-2">
+                    <button
+                      className="text-sm bg-[#4F46E5] hover:bg-indigo-700 text-white font-bold py-1 px-3 rounded"
+                      onClick={toggleSidePanel}
+                    >
+                      Vertical
+                    </button>
+                    <button
+                      className="text-sm bg-[#4F46E5] hover:bg-indigo-700 text-white font-bold py-1 px-3 rounded"
+                      onClick={toggleSidePanel}
+                    >
+                      Horizontal
+                    </button>
+                    <button
+                      className="text-sm bg-[#4F46E5] hover:bg-indigo-700 text-white font-bold py-1 px-2 rounded"
+                      onClick={toggleSidePanel}
+                    >
+                      Radial
+                    </button>
+                    <button
+                      className="text-sm bg-[#4F46E5] hover:bg-indigo-700 text-white font-bold py-1 px-2 rounded"
+                      onClick={toggleSidePanel}
+                    >
+                      Force
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>
+
           {/* MUI Button positioned absolutely to be centered and unaffected by panel content */}
           <Button
             variant="contained"
@@ -88,7 +118,7 @@ const NewProjectPage: React.FC = () => {
           className="flex-grow border border-white/20 bg-white"
           style={{ height: "calc(100vh - 3.3rem)" }}
         >
-          <App></App>
+          <Display config={config}></Display>
         </div>
       </div>
     </div>

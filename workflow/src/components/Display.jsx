@@ -1,30 +1,31 @@
-import ELK from 'elkjs/lib/elk.bundled.js';
-import React, { useCallback } from 'react';
+import ELK from "elkjs/lib/elk.bundled.js";
+import React, { useCallback } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   Panel,
   useNodesState,
   useEdgesState,
   useReactFlow,
-} from 'reactflow';
+} from "reactflow";
 
-import { initialNodes, initialEdges } from './nodes-edges.js';
-import 'reactflow/dist/style.css';
+import { initialNodes, initialEdges } from "./nodes-edges.js";
+import "reactflow/dist/style.css";
 
 const elk = new ELK();
 
-const useLayoutedElements = () => {
+const useLayoutedElements = ({ config }) => {
   const { getNodes, setNodes, getEdges, fitView } = useReactFlow();
   const defaultOptions = {
-    'elk.algorithm': 'layered',
-    'elk.layered.spacing.nodeNodeBetweenLayers': 100,
-    'elk.spacing.nodeNode': 80,
+    "elk.algorithm": "layered",
+    "elk.layered.spacing.nodeNodeBetweenLayers": 100,
+    "elk.spacing.nodeNode": 80,
+    "elk.direction": "DOWN",
   };
 
   const getLayoutedElements = useCallback((options) => {
     const layoutOptions = { ...defaultOptions, ...options };
     const graph = {
-      id: 'root',
+      id: "root",
       layoutOptions: layoutOptions,
       children: getNodes(),
       edges: getEdges(),
@@ -42,15 +43,19 @@ const useLayoutedElements = () => {
         fitView();
       });
     });
-  }, );
+  });
 
   return { getLayoutedElements };
 };
 
-const LayoutFlow = () => {
+const LayoutFlow = ({ config }) => {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
-  const { getLayoutedElements } = useLayoutedElements();
+  const { getLayoutedElements } = useLayoutedElements(config);
+
+ 
+  
+  console.log(config, "config");
 
   return (
     <ReactFlow
@@ -63,14 +68,20 @@ const LayoutFlow = () => {
       <Panel position="top-right">
         <button
           onClick={() =>
-            getLayoutedElements({ 'elk.algorithm': 'layered', 'elk.direction': 'DOWN' })
+            getLayoutedElements({
+              "elk.algorithm": "layered",
+              "elk.direction": "DOWN",
+            })
           }
         >
           vertical layout
         </button>
         <button
           onClick={() =>
-            getLayoutedElements({ 'elk.algorithm': 'layered', 'elk.direction': 'RIGHT' })
+            getLayoutedElements({
+              "elk.algorithm": "layered",
+              "elk.direction": "RIGHT",
+            })
           }
         >
           horizontal layout
@@ -78,7 +89,7 @@ const LayoutFlow = () => {
         <button
           onClick={() =>
             getLayoutedElements({
-              'elk.algorithm': 'org.eclipse.elk.radial',
+              "elk.algorithm": "org.eclipse.elk.radial",
             })
           }
         >
@@ -87,7 +98,7 @@ const LayoutFlow = () => {
         <button
           onClick={() =>
             getLayoutedElements({
-              'elk.algorithm': 'org.eclipse.elk.force',
+              "elk.algorithm": "org.eclipse.elk.force",
             })
           }
         >
@@ -98,12 +109,13 @@ const LayoutFlow = () => {
   );
 };
 
-function ReactFlowComponent() {
-	return (
-	  <ReactFlowProvider>
-		<LayoutFlow />
-	  </ReactFlowProvider>
-	);
-}
+function Display({ config }) {
   
-export default ReactFlowComponent;
+  return (
+    <ReactFlowProvider>
+      <LayoutFlow config={config} />
+    </ReactFlowProvider>
+  );
+}
+
+export default Display;
