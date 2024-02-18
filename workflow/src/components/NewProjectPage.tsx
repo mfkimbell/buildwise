@@ -1,30 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import "reactflow/dist/style.css";
-import ReactFlow, {
-  Node,
-  addEdge,
-  Background,
-  Edge,
-  Connection,
-  useNodesState,
-  useEdgesState,
-  ReactFlowProvider,
-} from "react-flow-renderer";
 import Header from "./Header";
 import CustomNode from "./CustomNode";
 import Button from "@mui/material/Button";
-import { initialNodes, initialEdges } from "./nodes-edges";
-import CircleNode from "./CircleNode";
-import RectangleNode from "./RectangleNode";
-import RhombusNode from "./RhombusNode";
-// import { getLayoutedElements, useLayoutedElements, Display } from "./Display";
-import getLayoutedElements from "./Display";
-import useLayoutedElements from "./Display";
 import Display from "./Display";
-import ELK from "elkjs/lib/elk.bundled.js";
 
-const elk = new ELK();
-// const { getLayoutedElements } = useLayoutedElements();
 const NewProjectPage: React.FC = () => {
   const [isSidePanelCollapsed, setIsSidePanelCollapsed] = useState(false);
   const [layoutOptions, setLayoutOptions] = useState({});
@@ -49,9 +29,6 @@ const NewProjectPage: React.FC = () => {
 
   // Button dimensions
   const buttonWidth = "40px"; // Width of the button in pixels
-
-  console.log("myNodes", initialNodes);
-  console.log("myEdges", initialEdges);
 
   return (
     <div className="w-full h-screen flex flex-col bg-[#0D0D0D]">
@@ -121,7 +98,7 @@ const NewProjectPage: React.FC = () => {
 
         <div
           id="flow-render"
-          className="flex-grow border border-white/20 bg-white"
+          className="flex-grow"
           style={{ height: "calc(100vh - 3.3rem)" }}
         >
           <Display layoutOptions={layoutOptions} />

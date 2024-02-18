@@ -7,9 +7,47 @@ import ReactFlow, {
   useEdgesState,
   useReactFlow,
 } from "reactflow";
+import CustomNode from "./CustomNode";
 
-import { initialNodes, initialEdges } from "./nodes-edges.js";
+// import { initialNodes, initialEdges } from "./nodes-edges.js";
 import "reactflow/dist/style.css";
+
+const nodeTypes = {
+  custom: CustomNode,
+};
+
+const initialNodes: Node[] = [
+  {
+    id: "1",
+    type: "custom",
+    data: { label: "AWS", imgKey: "aws" },
+    position: { x: 250, y: 5 },
+  },
+  {
+    id: "2",
+    type: "custom",
+    data: { label: "React", imgKey: "react" },
+    position: { x: 100, y: 100 },
+  },
+  {
+    id: "3",
+    type: "custom",
+    data: { label: "Kubernetes", imgKey: "kubernetes" },
+    position: { x: 400, y: 100 },
+  },
+  {
+    id: "4",
+    type: "custom",
+    data: { label: "Docker", imgKey: "docker" },
+    position: { x: 400, y: 200 },
+  },
+];
+
+const initialEdges = [
+  { id: "e1-2", source: "1", target: "2", animated: true },
+  { id: "e1-3", source: "1", target: "3", animated: true },
+  { id: "e1-4", source: "3", target: "4", animated: true },
+];
 
 const elk = new ELK();
 
@@ -48,7 +86,7 @@ const useLayoutedElements = () => {
   return { getLayoutedElements };
 };
 
-const LayoutFlow = ({ layoutOptions })  => {
+const LayoutFlow = ({ layoutOptions }) => {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
   const { getLayoutedElements } = useLayoutedElements();
@@ -59,54 +97,57 @@ const LayoutFlow = ({ layoutOptions })  => {
   }, [layoutOptions]);
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      fitView
-    >
-      <Panel position="top-right">
-        <button
-          onClick={() =>
-            getLayoutedElements({
-              "elk.algorithm": "layered",
-              "elk.direction": "DOWN",
-            })
-          }
-        >
-          vertical layout
-        </button>
-        <button
-          onClick={() =>
-            getLayoutedElements({
-              "elk.algorithm": "layered",
-              "elk.direction": "RIGHT",
-            })
-          }
-        >
-          horizontal layout
-        </button>
-        <button
-          onClick={() =>
-            getLayoutedElements({
-              "elk.algorithm": "org.eclipse.elk.radial",
-            })
-          }
-        >
-          radial layout
-        </button>
-        <button
-          onClick={() =>
-            getLayoutedElements({
-              "elk.algorithm": "org.eclipse.elk.force",
-            })
-          }
-        >
-          force layout
-        </button>
-      </Panel>
-    </ReactFlow>
+    <div className="bg-black w-full h-full border border-b border-white/20">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
+        fitView
+      >
+        <Panel position="top-right">
+          <button
+            onClick={() =>
+              getLayoutedElements({
+                "elk.algorithm": "layered",
+                "elk.direction": "DOWN",
+              })
+            }
+          >
+            vertical layout
+          </button>
+          <button
+            onClick={() =>
+              getLayoutedElements({
+                "elk.algorithm": "layered",
+                "elk.direction": "RIGHT",
+              })
+            }
+          >
+            horizontal layout
+          </button>
+          <button
+            onClick={() =>
+              getLayoutedElements({
+                "elk.algorithm": "org.eclipse.elk.radial",
+              })
+            }
+          >
+            radial layout
+          </button>
+          <button
+            onClick={() =>
+              getLayoutedElements({
+                "elk.algorithm": "org.eclipse.elk.force",
+              })
+            }
+          >
+            force layout
+          </button>
+        </Panel>
+      </ReactFlow>
+    </div>
   );
 };
 
