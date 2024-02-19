@@ -13,8 +13,19 @@ import ReactFlow, {
 import CustomNode from "./CustomNode";
 import CustomEdge from "./CustomEdge";
 
+function Display({ layoutOptions, handleEdgeClick }) {
+  return (
+    <ReactFlowProvider>
+      <LayoutFlow
+        layoutOptions={layoutOptions}
+        handleEdgeClick={handleEdgeClick}
+      />
+    </ReactFlowProvider>
+  );
+}
+
 const edgeTypes = {
-  customEdge: CustomEdge, // Ensure this matches your custom edge type key
+  customEdge: CustomEdge,
 };
 
 const nodeTypes = {
@@ -53,12 +64,49 @@ const initialNodes = [
 ];
 
 const initialEdges = [
-  { id: "e1-2", source: "1", target: "2", type: "customEdge", animated: true },
-  { id: "e1-3", source: "1", target: "3", type: "customEdge", animated: true },
-  { id: "e1-4", source: "3", target: "4", type: "customEdge", animated: true },
+  {
+    id: "e1-2",
+    source: "1",
+    target: "2",
+    type: "customEdge",
+    animated: true,
+    data: {
+      connection: "AWS connects to Docker",
+    },
+  },
+  {
+    id: "e1-3",
+    source: "1",
+    target: "3",
+    type: "customEdge",
+    animated: true,
+    data: {
+      connection: "AWS connects to Kubernetes",
+    },
+  },
+  {
+    id: "e1-4",
+    source: "3",
+    target: "4",
+    type: "customEdge",
+    animated: true,
+    data: {
+      connection: "AWS connects to Third",
+    },
+  },
 ];
 
 const elk = new ELK();
+
+const augmentEdgesWithClickHandler = (edges, handleClick) => {
+  return edges.map((edge) => ({
+    ...edge,
+    data: {
+      ...edge.data,
+      handleEdgeClick: handleClick,
+    },
+  }));
+};
 
 const useLayoutedElements = () => {
   const { getNodes, setNodes, getEdges, fitView } = useReactFlow();
@@ -96,9 +144,17 @@ const useLayoutedElements = () => {
   return { getLayoutedElements };
 };
 
-const LayoutFlow = ({ layoutOptions }) => {
+const LayoutFlow = ({ layoutOptions, handleEdgeClick }) => {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  // Augment initial edges with the handleEdgeClick function
+  const augmentedEdges = augmentEdgesWithClickHandler(
+    initialEdges,
+    handleEdgeClick
+  );
+
+  // Initialize edges state with augmented edges
+  const [edges, setEdges, onEdgesChange] = useEdgesState(augmentedEdges);
   const { getLayoutedElements } = useLayoutedElements();
   const edgeUpdateSuccessful = useRef(true);
 
@@ -150,13 +206,5 @@ const LayoutFlow = ({ layoutOptions }) => {
     </div>
   );
 };
-
-function Display({ layoutOptions }) {
-  return (
-    <ReactFlowProvider>
-      <LayoutFlow layoutOptions={layoutOptions} />
-    </ReactFlowProvider>
-  );
-}
 
 export default Display;
