@@ -1,24 +1,21 @@
 [project]
-name = "backend"
-version = "0.1.0"
-description = "Default template for PDM package"
-authors = [
-    {name = "mitchell_kimbell",email = "mfkimbell@gmail.com"},
-]
 dependencies = [
-    "fastapi>=0.109.2",
-    "uvicorn>=0.27.0.post1",
-    "dotenv>=0.0.5",
+   "fastapi>=0.109.2",
+    # FastAPI has good backward compatibility
+    "uvicorn>=0.13.0",
+    # Uvicorn has supported ASGI apps well since this version
+    # python-dotenv has stable support for loading env variables across Python versions
+    "requests>=2.25.0",
+    # Requests is well-maintained for compatibility
+    "edgedb>=1.0",
+    # Ensure to use a version compatible with your Edgedb server
+    "openai>=0.10.0",
+    # OpenAI's client library, ensure to use a version that supports your use case
     "python-dotenv>=1.0.1",
-    "requests>=2.31.0",
-    
-    "edgedb>=1.8.0",
-    "numpy>=1.26.4",
 ]
-requires-python = "==3.12.*"
+requires-python = ">=3.8"
 readme = "README.md"
 license = {text = "MIT"}
-
 
 [tool.pdm]
 distribution = false

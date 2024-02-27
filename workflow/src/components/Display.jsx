@@ -4,7 +4,6 @@ import "reactflow/dist/style.css";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
-  Controls,
   updateEdge,
   useNodesState,
   useEdgesState,
@@ -12,6 +11,27 @@ import ReactFlow, {
 } from "reactflow";
 import CustomNode from "./CustomNode";
 import CustomEdge from "./CustomEdge";
+import { initialNodes, initialEdges } from "../data/nodes-edges-arch";
+
+try {
+  const response = await fetch("http://localhost:3000/");
+  console.log("response", response);
+
+  if (response.ok) {
+    const contentType = response.headers.get("Content-Type");
+    if (contentType && contentType.includes("application/json")) {
+      const json = await response.json();
+      console.log("json", json);
+    } else {
+      console.error("Response was not JSON.");
+    }
+  } else {
+    console.error("Response was not ok.", response);
+  }
+} catch (error) {
+  console.error(`Error occurred: ${error}`);
+} finally {
+}
 
 function Display({ layoutOptions, handleEdgeClick }) {
   return (
@@ -31,70 +51,6 @@ const edgeTypes = {
 const nodeTypes = {
   custom: CustomNode,
 };
-
-const initialNodes = [
-  {
-    id: "1",
-    type: "custom",
-    data: { label: "AWS", imgKey: "aws" },
-    position: { x: 250, y: 5 },
-    isConnectable: true,
-  },
-  {
-    id: "2",
-    type: "custom",
-    data: { label: "React", imgKey: "react" },
-    position: { x: 100, y: 100 },
-    isConnectable: true,
-  },
-  {
-    id: "3",
-    type: "custom",
-    data: { label: "Kubernetes", imgKey: "kubernetes" },
-    position: { x: 400, y: 100 },
-    isConnectable: true,
-  },
-  {
-    id: "4",
-    type: "custom",
-    data: { label: "Docker", imgKey: "docker" },
-    position: { x: 400, y: 200 },
-    isConnectable: true,
-  },
-];
-
-const initialEdges = [
-  {
-    id: "e1-2",
-    source: "1",
-    target: "2",
-    type: "customEdge",
-    animated: true,
-    data: {
-      connection: "AWS connects to Docker",
-    },
-  },
-  {
-    id: "e1-3",
-    source: "1",
-    target: "3",
-    type: "customEdge",
-    animated: true,
-    data: {
-      connection: "AWS connects to Kubernetes",
-    },
-  },
-  {
-    id: "e1-4",
-    source: "3",
-    target: "4",
-    type: "customEdge",
-    animated: true,
-    data: {
-      connection: "AWS connects to Third",
-    },
-  },
-];
 
 const elk = new ELK();
 
@@ -138,7 +94,8 @@ const useLayoutedElements = () => {
         });
       });
     },
-    [getNodes, setNodes, getEdges, fitView]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getNodes, getEdges, setNodes, fitView]
   );
 
   return { getLayoutedElements };
@@ -170,18 +127,24 @@ const LayoutFlow = ({ layoutOptions, handleEdgeClick }) => {
     edgeUpdateSuccessful.current = false;
   }, []);
 
-  const onEdgeUpdate = useCallback((oldEdge, newConnection) => {
-    edgeUpdateSuccessful.current = true;
-    setEdges((els) => updateEdge(oldEdge, newConnection, els));
-  }, []);
+  const onEdgeUpdate = useCallback(
+    (oldEdge, newConnection) => {
+      edgeUpdateSuccessful.current = true;
+      setEdges((els) => updateEdge(oldEdge, newConnection, els));
+    },
+    [setEdges]
+  );
 
-  const onEdgeUpdateEnd = useCallback((_, edge) => {
-    if (!edgeUpdateSuccessful.current) {
-      setEdges((eds) => eds.filter((e) => e.id !== edge.id));
-    }
+  const onEdgeUpdateEnd = useCallback(
+    (_, edge) => {
+      if (!edgeUpdateSuccessful.current) {
+        setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+      }
 
-    edgeUpdateSuccessful.current = true;
-  }, []);
+      edgeUpdateSuccessful.current = true;
+    },
+    [setEdges]
+  );
 
   useEffect(() => {
     getLayoutedElements(layoutOptions);

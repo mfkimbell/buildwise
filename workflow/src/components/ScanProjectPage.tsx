@@ -12,28 +12,8 @@ import ReactFlow, {
 import Header from "./Header";
 import CustomNode from "./CustomNode";
 import Button from "@mui/material/Button"; // Import MUI Button component
+import { initialNodes, initialEdges } from '../data/nodes-edges-basic'
 
-const initialNodes: Node[] = [
-  {
-    id: "1",
-    type: "input",
-    data: { label: "Node 1" },
-    position: { x: 250, y: 5 },
-  },
-  { id: "2", data: { label: "Node 2" }, position: { x: 100, y: 100 } },
-  { id: "3", data: { label: "Node 3" }, position: { x: 400, y: 100 } },
-  {
-    id: "4",
-    type: "custom",
-    data: { label: "Custom Node" },
-    position: { x: 400, y: 200 },
-  },
-];
-
-const initialEdges: Edge[] = [
-  { id: "e1-2", source: "1", target: "2", animated: true },
-  { id: "e1-3", source: "1", target: "3" },
-];
 
 const nodeTypes = {
   custom: CustomNode,
