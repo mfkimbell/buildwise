@@ -5,14 +5,14 @@ import re
 import requests
 from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from .spotify.ImageStitch import *
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
 
-# from starlette.responses import FileResponse
-# from api.spotify.SpotifyClient import SpotifyClient
-
-
+# initialization
+load_dotenv()
+client = OpenAI(api_key="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")
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],  # Allows all origins for localhost:3000
@@ -28,8 +28,24 @@ print("main.py running")
 async def read_root():
     return {"Hello": "World"}
 
+@app.post("/api/testgpt")
+async def test_gpt(request: Request):
+    request_json = await request.json()  # Parse JSON body
+    user_input = request_json["data"]  # Extract the user input from the JSON
 
-@app.post("/api/parse")
-async def github_gpt4(request: Request):
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a programming devops expert",
+            },
+            {
+                "role": "user",
+                "content": user_input,  # Use the extracted user input
+            },
+        ],
+    )
 
-    return "hi"
+    text = completion.choices[0].message  # Extract the text from the completion
+    return {"text": text}

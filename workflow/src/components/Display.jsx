@@ -14,7 +14,15 @@ import CustomEdge from "./CustomEdge";
 import { initialNodes, initialEdges } from "../data/nodes-edges-arch";
 
 try {
-  const response = await fetch("http://localhost:3000/");
+  const postData = { data: "give me some names for cats" };
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(postData), // Correctly stringify the JSON object
+  };
+
+  const response = await fetch("http://localhost:8000/api/testgpt", options);
+  console.log("here");
   console.log("response", response);
 
   if (response.ok) {
@@ -30,7 +38,6 @@ try {
   }
 } catch (error) {
   console.error(`Error occurred: ${error}`);
-} finally {
 }
 
 function Display({ layoutOptions, handleEdgeClick }) {

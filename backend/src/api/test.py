@@ -6,7 +6,7 @@ load_dotenv()
 
 print("test file \n")
 
-# api_key = "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"
+api_key = "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"
 
 # print("API key: ", api_key)
 
