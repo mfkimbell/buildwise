@@ -1,13 +1,13 @@
 export const initialNodes = [
   {
-    id: "1",
+    id: "aws",
     type: "custom",
     data: { label: "AWS", imgKey: "aws" },
     position: { x: 250, y: 5 },
     isConnectable: true,
   },
   {
-    id: "2",
+    id: "react",
     type: "custom",
     data: { label: "React", imgKey: "react" },
     position: { x: 100, y: 100 },
@@ -32,8 +32,8 @@ export const initialNodes = [
 export const initialEdges = [
   {
     id: "e1-2",
-    source: "1",
-    target: "2",
+    source: "aws",
+    target: "react",
     type: "customEdge",
     animated: true,
     data: {
@@ -42,7 +42,7 @@ export const initialEdges = [
   },
   {
     id: "e1-3",
-    source: "1",
+    source: "aws",
     target: "3",
     type: "customEdge",
     animated: true,
