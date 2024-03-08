@@ -51,16 +51,6 @@ export const initialNodes = [
 ];
 
 export const initialEdges = [
-  // {
-  //   id: "e1-2",
-  //   source: "react",
-  //   target: "react",
-  //   type: "customEdge",
-  //   animated: true,
-  //   data: {
-  //     connection: "<description about how AWS connects to React>",
-  //   },
-  // },
   {
     id: "e1-3",
     source: "react",
@@ -72,9 +62,9 @@ export const initialEdges = [
     },
   },
   {
-    id: "e1-4",
-    source: "mongodb",
-    target: "docker2",
+    id: "e1-6",
+    source: "react",
+    target: "mongodb",
     type: "customEdge",
     animated: true,
     data: {
@@ -91,16 +81,7 @@ export const initialEdges = [
       connection: "<description about how Kubernetes connects to Docker>",
     },
   },
-  {
-    id: "e1-6",
-    source: "react",
-    target: "mongodb",
-    type: "customEdge",
-    animated: true,
-    data: {
-      connection: "<description about how Kubernetes connects to Docker>",
-    },
-  },
+
   {
     id: "e1-7",
     source: "react",
@@ -115,6 +96,16 @@ export const initialEdges = [
     id: "e1-8",
     source: "fastapi",
     target: "docker3",
+    type: "customEdge",
+    animated: true,
+    data: {
+      connection: "<description about how Kubernetes connects to Docker>",
+    },
+  },
+  {
+    id: "e1-4",
+    source: "mongodb",
+    target: "docker2",
     type: "customEdge",
     animated: true,
     data: {

@@ -9,9 +9,7 @@ import grabby from "../images/grabbyOcto.png";
 const HomePage: React.FC = () => {
   return (
     <div className="w-full h-screen flex flex-col bg-[#0D0D0D]">
-      <Header
-        title="BuildWise"
-      />
+      <Header title="BuildWise" />
       <div className="flex-grow flex flex-col items-center justify-center text-center text-white relative">
         {/* Container for BuildWise and Image */}
         <div className="relative inline-block">
@@ -28,20 +26,19 @@ const HomePage: React.FC = () => {
         <p className="text-2xl mb-6">Your Automated Architecture Visualizer</p>
         <p className="mb-8">Please select one of the following options</p>
         <div className="flex justify-center gap-4">
+          <Link to="/send-prompt">
+            <button className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-5 rounded cursor-pointer w-40">
+              New Project
+            </button>
+          </Link>
           <Link to="/scan-project">
             <button className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-5 rounded cursor-pointer w-40">
               Scan Project
             </button>
           </Link>
-          <Link to="/new-project">
-            <button className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-5 rounded cursor-pointer w-40">
-              New Project
-            </button>
-          </Link>
         </div>
       </div>
       {/* Footer could go here */}
-     
     </div>
   );
 };
