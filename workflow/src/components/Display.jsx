@@ -11,22 +11,15 @@ import ReactFlow, {
 } from "reactflow";
 import CustomNode from "./CustomNode";
 import CustomEdge from "./CustomEdge";
-import { initialNodes, initialEdges } from "../data/nodes-edges-arch";
+// import { initialNodes, initialEdges } from "../data/nodes-edges-arch";
 
-import { useGlobal } from "../data/global-state"; 
+import { useGlobal } from "../data/global-state";
 
-
-
-function Display({ layoutOptions, graphData, handleEdgeClick }) {
-
-
- 
-
+function Display({ layoutOptions, handleEdgeClick }) {
   return (
     <ReactFlowProvider>
       <LayoutFlow
         layoutOptions={layoutOptions}
-        graphData={graphData}
         handleEdgeClick={handleEdgeClick}
       />
     </ReactFlowProvider>
@@ -91,50 +84,11 @@ const useLayoutedElements = () => {
   return { getLayoutedElements };
 };
 
-const LayoutFlow = ({ layoutOptions, graphData, handleEdgeClick }) => {
+const LayoutFlow = ({ layoutOptions, handleEdgeClick }) => {
   const { globalState, setGlobalState } = useGlobal();
   const { nodes: initialNodes, edges: initialEdges } = globalState;
 
-  if (graphData && typeof graphData.text === "object") {
-    // console.log("ContentAAA:", graphData.text.content);
-  }
-
-  let initialNodes2;
-  let initialEdges2;
-
-  // Log the entire object to check its structure
-  // console.log("graphData.text:", graphData.text);
-
-  if (
-    graphData &&
-    graphData.text &&
-    typeof graphData.text.content === "string"
-  ) {
-    // Log the content to see if it's a proper JSON string
-    // console.log("Content string:", graphData.text.content);
-
-    try {
-      // Parse the JSON string in the content property
-      const contentObject = JSON.parse(graphData.text.content);
-      initialNodes2 = contentObject.initialNodes;
-      initialEdges2 = contentObject.initialEdges;
-
-      // Log the extracted values
-      // console.log("Extracted Initial Nodes:", initialNodes2);
-      // console.log("Extracted Initial Edges:", initialEdges2);
-    } catch (e) {
-      console.error("Parsing error:", e);
-      // If parsing fails, it might be due to incorrect string format.
-      // You might need to preprocess the string to remove line breaks and extra quotes.
-    }
-  }
-  // console.log("initialNodes: ", initialNodes);
-  // console.log("initialNodes2: ", initialNodes2);
-
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
-
-  // console.log("initialNodes: ", initialEdges);
-  // console.log("initialNodes2: ", initialEdges2);
 
   // Augment initial edges with the handleEdgeClick function
   const augmentedEdges = augmentEdgesWithClickHandler(

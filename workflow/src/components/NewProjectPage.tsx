@@ -12,14 +12,7 @@ const NewProjectPage: React.FC = () => {
   const [content, setContent] = useState("");
 
   const location = useLocation();
-  const { graphData } = location.state || {}; // Access the passed state
-  useEffect(() => {
-    // Assuming 'graphData' is what you're expecting to receive from the navigation state
-    if (location.state && location.state.graphData) {
-      setNodesAndEdges(location.state.graphData); // Update state based on location.state
-    }
-  }, [location.state]);
-  console.log("graphData: ", graphData);
+
   const handleEdgeClick = (content: any) => {
     console.log("Content: ", content.connection);
     setContent(content.connection);
@@ -168,7 +161,6 @@ const NewProjectPage: React.FC = () => {
         >
           <Display
             layoutOptions={layoutOptions}
-            graphData={nodesAndEdges}
             handleEdgeClick={handleEdgeClick}
           />
         </div>

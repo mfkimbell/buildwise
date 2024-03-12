@@ -171,7 +171,6 @@ const NewProjectPage: React.FC = () => {
         >
           <Display
             layoutOptions={layoutOptions}
-            graphData=""
             handleEdgeClick={handleEdgeClick}
           />
         </div>
