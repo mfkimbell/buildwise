@@ -3,11 +3,21 @@ import "reactflow/dist/style.css";
 import Header from "./Header";
 import Button from "@mui/material/Button";
 import Display from "./Display";
+import { useGlobal } from "../data/global-state";
 
 const NewProjectPage: React.FC = () => {
   const [isSidePanelCollapsed, setIsSidePanelCollapsed] = useState(false);
   const [layoutOptions, setLayoutOptions] = useState({});
   const [content, setContent] = useState("");
+  const { globalState, setGlobalState } = useGlobal();
+  const updateState = () => {
+    setGlobalState((prevState) => ({
+      ...prevState,
+      exampleField: "New Value",
+    }));
+  };
+
+  console.log("global-state", globalState);
 
   const handleEdgeClick = (content: any) => {
     console.log("Content: ", content.connection);
@@ -111,6 +121,10 @@ const NewProjectPage: React.FC = () => {
                     <h2 className="text-lg font-semibold mb-2 ml-2 ">
                       Connection
                     </h2>
+                    <div>
+                      Current State: {globalState.exampleField}
+                      <button onClick={updateState}>Update State</button>
+                    </div>
                     <div
                       id="content"
                       className="flex flex-col space-y-2 ml-2 mr-2 mb-2"

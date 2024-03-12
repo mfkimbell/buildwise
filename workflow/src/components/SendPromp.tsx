@@ -3,14 +3,12 @@ import Header from "./Header";
 import "../tailwind.css";
 import grabby from "../images/grabbyOcto.png";
 import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
   useNavigate,
-  Link,
 } from "react-router-dom";
+import { useGlobal } from "../data/global-state"; 
 
 const SendPrompt: React.FC = () => {
+  const { globalState, setGlobalState } = useGlobal();
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -27,8 +25,45 @@ const SendPrompt: React.FC = () => {
         "http://localhost:8000/api/testgpt",
         options
       );
+      console.log("response: ", response);
       if (response.ok) {
         const json = await response.json();
+
+        let graphData = json;
+        console.log("graphData: ", graphData);
+        let nodes: any;
+        let edges: any;
+        if (
+          graphData &&
+          graphData.text &&
+          typeof graphData.text.content === "string"
+        ) {
+          // Log the content to see if it's a proper JSON string
+          console.log("Content string:", graphData.text.content);
+
+          try {
+            // Parse the JSON string in the content property
+            const contentObject = JSON.parse(graphData.text.content);
+            nodes = contentObject.initialNodes;
+            edges = contentObject.initialEdges;
+            setGlobalState(prevState => ({
+              ...prevState,
+              nodes: nodes,
+              edges: edges,
+            }));
+
+            
+
+            // Log the extracted values
+            console.log("Reported nodes prompt:", nodes);
+            console.log("Reported edges prompt:", edges);
+          } catch (e) {
+            console.error("Parsing error:", e);
+            // If parsing fails, it might be due to incorrect string format.
+            // You might need to preprocess the string to remove line breaks and extra quotes.
+          }
+        }
+
         // Navigate with state
         navigate("/new-project", { state: { graphData: json } });
       } else {
