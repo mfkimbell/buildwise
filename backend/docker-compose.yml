@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  api:
+    build:
+      context: "."
+      dockerfile: "./Dockerfile"
+    container_name: “buildwise-backend"
+    ports:
+      - "8000:8000"
+    networks:
+      - "workflow"
+networks:
+  workflow:
+    external: true

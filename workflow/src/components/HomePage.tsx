@@ -31,7 +31,7 @@ const HomePage: React.FC = () => {
               New Project
             </button>
           </Link>
-          <Link to="/scan-project">
+          <Link to="/scan-prompt">
             <button className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-5 rounded cursor-pointer w-40">
               Scan Project
             </button>

@@ -5,7 +5,7 @@ import grabby from "../images/grabbyOcto.png";
 import { useNavigate } from "react-router-dom";
 import { useGlobal } from "../data/global-state";
 
-const SendPrompt: React.FC = () => {
+const ScanPrompt: React.FC = () => {
   const { globalState, setGlobalState } = useGlobal();
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate(); // Initialize useNavigate
@@ -61,7 +61,7 @@ const SendPrompt: React.FC = () => {
         }
 
         // Navigate with state
-        navigate("/new-project");
+        navigate("/scan-project");
       } else {
         console.error("Response was not ok.", response);
       }
@@ -71,10 +71,11 @@ const SendPrompt: React.FC = () => {
   };
 
   const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    fetchData(); // Call the async function and navigate upon completion
-    console.log(inputValue);
-    setInputValue(""); // Optionally reset input value
+    // event.preventDefault();
+    // fetchData(); // Call the async function and navigate upon completion
+    // console.log(inputValue);
+    // setInputValue(""); // Optionally reset input value
+    console.log("eventually, this will scan a github project");
   };
 
   return (
@@ -91,7 +92,7 @@ const SendPrompt: React.FC = () => {
           />
         </div>
         <p className="text-2xl mb-6">Your Automated Architecture Visualizer</p>
-        <p className="mb-8">Enter your project details below</p>
+        <p className="mb-8">Paste your github repository link</p>
         <form
           className="flex flex-col items-center gap-4"
           onSubmit={handleSubmit}
@@ -116,4 +117,4 @@ const SendPrompt: React.FC = () => {
   );
 };
 
-export default SendPrompt;
+export default ScanPrompt;
