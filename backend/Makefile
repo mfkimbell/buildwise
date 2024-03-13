@@ -10,7 +10,7 @@ up:
 	docker compose up -d
 
 stop:
-	docker stop buildwisebackend
+	docker stop buildwise_backend
 
 remove:
-	docker remove buildwisebackend
+	docker remove buildwise_backend

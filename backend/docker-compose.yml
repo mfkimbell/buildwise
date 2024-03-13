@@ -4,11 +4,12 @@ services:
     build:
       context: "."
       dockerfile: "./Dockerfile"
-    container_name: buildwisebackend
+    container_name: buildwise_backend
     ports:
       - "8000:8000"
     networks:
-      - "workflow"
+      - workflow
+
 networks:
   workflow:
-    external: true
+    driver: bridge
