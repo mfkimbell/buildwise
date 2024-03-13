@@ -4,9 +4,9 @@ services:
     build:
       context: "."
       dockerfile: "./Dockerfile"
-    container_name: buildwisebackend
+    container_name: "buildwise_frontend"
     ports:
-      - "8000:8000"
+      - "3000:3000"
     networks:
       - "workflow"
 networks:

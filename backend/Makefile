@@ -10,7 +10,7 @@ up:
 	docker compose up -d
 
 stop:
-	docker stop api-but-space
+	docker stop buildwisebackend
 
 remove:
-	docker remove api-but-space
+	docker remove buildwisebackend

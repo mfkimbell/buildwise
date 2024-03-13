@@ -1,0 +1,18 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore any files or directories starting with . (e.g., .git, .env)
+.*
+
+# Ignore development and editor files
+.DS_Store
+.env
+*.log
+*.swp
+
+# Ignore build artifacts and dependencies
+/build
+/dist
+/coverage
+/npm-debug.log
+/yarn-error.log
