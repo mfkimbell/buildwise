@@ -11,7 +11,12 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
+
+# Test Area
 from pymongo.server_api import ServerApi
+from pymongo import MongoClient
+
+
 from urllib.parse import quote_plus
 
 # initialization
@@ -20,12 +25,19 @@ load_dotenv()
 MONGO_USER = quote_plus(os.getenv('MONGO_USER'))
 MONGO_PASS = quote_plus(os.getenv('MONGO_PASS'))
 # MONGODB_URL = f"mongodb://{MONGO_USER}:{MONGO_PASS}@cluster0.0mzfhaf.mongodb.net"
-MONGODB_URL = f"mongodb://{MONGO_USER}:{MONGO_PASS}@cluster0.0mzfhaf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-print(MONGODB_URL)
+# MONGODB_URL = f"mongodb://{MONGO_USER}:{MONGO_PASS}@cluster0.0mzfhaf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# print(MONGODB_URL)
 DATABASE_NAME = "buildwise_database"
 COLLECTION_NAME = "users"
 
-mongo_client = AsyncIOMotorClient(MONGODB_URL, server_api=ServerApi('1'))
+# mongo_client = AsyncIOMotorClient(MONGODB_URL, server_api=ServerApi('1'))
+
+uri = "mongodb+srv://cluster0.0mzfhaf.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
+mongo_client = MongoClient(uri,
+                     tls=True,
+                     tlsCertificateKeyFile='mongocert.pem',
+                     server_api=ServerApi('1'))
+
 db = mongo_client[DATABASE_NAME]
 collection = db[COLLECTION_NAME]
 
