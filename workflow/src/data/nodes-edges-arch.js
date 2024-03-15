@@ -1,6 +1,6 @@
 export const initialNodes = [
   {
-    id: "react",
+    id: "1",
     type: "custom",
     data: { label: "React", imgKey: "react" },
     position: { x: 250, y: 5 },
@@ -53,7 +53,7 @@ export const initialNodes = [
 export const initialEdges = [
   {
     id: "e1-3",
-    source: "react",
+    source: "1",
     target: "docker",
     type: "customEdge",
     animated: true,
@@ -63,7 +63,7 @@ export const initialEdges = [
   },
   {
     id: "e1-6",
-    source: "react",
+    source: "1",
     target: "mongodb",
     type: "customEdge",
     animated: true,
@@ -84,7 +84,7 @@ export const initialEdges = [
 
   {
     id: "e1-7",
-    source: "react",
+    source: "1",
     target: "fastapi",
     type: "customEdge",
     animated: true,

@@ -6,7 +6,7 @@ node_modules/
 
 # Ignore development and editor files
 .DS_Store
-.env
+
 *.log
 *.swp
 
