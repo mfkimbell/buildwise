@@ -4,7 +4,7 @@ run:
 	pdm run -- uvicorn src.api.main:app --host 0.0.0.0 --reload
 
 build:
-	docker compose build --no-cache
+	docker compose build
 
 build-force:
 	docker compose build --no-cache
