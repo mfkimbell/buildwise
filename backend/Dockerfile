@@ -10,7 +10,7 @@ RUN python -m pip --no-cache-dir install pdm
 
 COPY src/api /project/api
 
-COPY pyproject.toml pdm.lock /project/
+COPY pyproject.toml pdm.lock .env /project/
 
 RUN pdm install --frozen-lockfile --no-editable -vv
 
