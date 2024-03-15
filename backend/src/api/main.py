@@ -11,11 +11,14 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
+from urllib.parse import quote_plus
 
 # initialization
 load_dotenv()
 
-MONGODB_URL = "mongodb+srv://mfkimbell:<password>@cluster0.0mzfhaf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_USER = quote_plus(os.getenv('MONGO_USER'))
+MONGO_PASS = quote_plus(os.getenv('MONGO_PASS'))
+MONGODB_URL = f"mongodb+srv://{MONGO_USER}:{MONGO_PASS}@cluster0.0mzfhaf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 DATABASE_NAME = "buildwise_database"
 COLLECTION_NAME = "users"
 
