@@ -1,9 +1,12 @@
-.PHONY: run build up stop remove
+.PHONY: run build up stop remove build-force
 
 run:
 	pdm run -- uvicorn src.api.main:app --host 0.0.0.0 --reload
 
 build:
+	docker compose build --no-cache
+
+build-force:
 	docker compose build --no-cache
 
 up:
