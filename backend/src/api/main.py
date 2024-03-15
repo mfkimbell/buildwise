@@ -11,6 +11,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo.server_api import ServerApi
 from urllib.parse import quote_plus
 
 # initialization
@@ -18,11 +19,13 @@ load_dotenv()
 
 MONGO_USER = quote_plus(os.getenv('MONGO_USER'))
 MONGO_PASS = quote_plus(os.getenv('MONGO_PASS'))
-MONGODB_URL = f"mongodb+srv://{MONGO_USER}:{MONGO_PASS}@cluster0.0mzfhaf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# MONGODB_URL = f"mongodb://{MONGO_USER}:{MONGO_PASS}@cluster0.0mzfhaf.mongodb.net"
+MONGODB_URL = f"mongodb://{MONGO_USER}:{MONGO_PASS}@cluster0.0mzfhaf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+print(MONGODB_URL)
 DATABASE_NAME = "buildwise_database"
 COLLECTION_NAME = "users"
 
-mongo_client = AsyncIOMotorClient(MONGODB_URL)
+mongo_client = AsyncIOMotorClient(MONGODB_URL, server_api=ServerApi('1'))
 db = mongo_client[DATABASE_NAME]
 collection = db[COLLECTION_NAME]
 
@@ -35,7 +38,7 @@ client = OpenAI(api_key=api_key)
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Allows all origins for localhost:3000
+    allow_origins=["*"],  # Allows all origins for localhost:3000
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
