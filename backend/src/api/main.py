@@ -15,7 +15,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 # Test Area
 from pymongo.server_api import ServerApi
 from pymongo import MongoClient
-
+from bson import ObjectId
 
 from urllib.parse import quote_plus
 
@@ -66,8 +66,20 @@ async def read_root():
 
 @app.get("/mongo/test")
 async def root():
-    document = await collection.find_one()
+    document = collection.find_one()
+    if document is not None:
+        document = jsonable_document(document)
     return {"message": "Connected to MongoDB!", "data": document}
+
+def jsonable_document(doc):
+    """Convert MongoDB document (including ObjectId) to a JSON-serializable dictionary."""
+    if isinstance(doc, dict):
+        for key, value in doc.items():
+            if isinstance(value, ObjectId):
+                doc[key] = str(value)
+            elif isinstance(value, dict):
+                doc[key] = jsonable_document(value)
+    return doc
 
 
 @app.post("/mongo/{user_id}")
