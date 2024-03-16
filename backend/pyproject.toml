@@ -5,7 +5,7 @@ dependencies = [
     "uvicorn>=0.13.0",
     # Uvicorn has supported ASGI apps well since this version
     # python-dotenv has stable support for loading env variables across Python versions
-    "requests>=2.25.0",
+    "requests>=2.31.0",
     # Requests is well-maintained for compatibility
     "edgedb>=1.0",
     # Ensure to use a version compatible with your Edgedb server
@@ -15,6 +15,7 @@ dependencies = [
     "pymongo>=4.6.2",
     "motor>=3.3.2",
     "bson>=0.5.10",
+    "httpx>=0.27.0",
 ]
 requires-python = ">=3.8"
 readme = "README.md"

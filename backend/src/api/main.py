@@ -1,4 +1,5 @@
 # STL
+from http.client import HTTPException
 import re
 from typing import Any, Dict
 
@@ -8,9 +9,12 @@ from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Body
 from openai import OpenAI
+from fastapi import Path
 import os
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
+import httpx
+import re
 
 # Test Area
 from pymongo.server_api import ServerApi
@@ -21,6 +25,8 @@ from urllib.parse import quote_plus
 
 # initialization
 load_dotenv()
+
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 MONGO_USER = quote_plus(os.getenv("MONGO_USER"))
 MONGO_PASS = quote_plus(os.getenv("MONGO_PASS"))
@@ -33,9 +39,22 @@ COLLECTION_NAME = "users"
 # mongo_client = AsyncIOMotorClient(MONGODB_URL, server_api=ServerApi('1'))
 print(f"workdir: {os.getcwd()}")
 uri = "mongodb+srv://cluster0.0mzfhaf.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0"
-mongo_client = MongoClient(
-    uri, tls=True, tlsCertificateKeyFile="api/mongocert.pem", server_api=ServerApi("1")
-)
+
+try:
+    mongo_client = MongoClient(
+        uri,
+        tls=True,
+        tlsCertificateKeyFile="src/api/mongocert.pem",
+        server_api=ServerApi("1"),
+    )
+except FileNotFoundError:
+    mongo_client = MongoClient(
+        uri,
+        tls=True,
+        tlsCertificateKeyFile="api/mongocert.pem",
+        server_api=ServerApi("1"),  # to r
+    )
+
 
 db = mongo_client[DATABASE_NAME]
 collection = db[COLLECTION_NAME]
@@ -113,7 +132,7 @@ async def test_gpt(request: Request):
         '"initialEdges": [
             {"id": "e1-3","source": "1","target": "3","type": "customEdge","animated": true,"data": {"connection": "<description about how react connects to docker>"}},'
             '{"id": "e1-6","source": "1","target": "2","type": "customEdge","animated": true,"data": {"connection": "<description about how react connects to mongodb>"}}]}'
-        
+        Please ensure the response is strictly in JSON format. Do not write any other words or content. I only want the json as the output.
         """
     )
 
@@ -121,7 +140,7 @@ async def test_gpt(request: Request):
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        # model="gpt-4", //Uncomment this when using gpt4
+        # model="gpt-4",  # Uncomment this when using gpt4
         messages=[
             {
                 "role": "system",
@@ -136,3 +155,70 @@ async def test_gpt(request: Request):
 
     text = completion.choices[0].message  # Extract the text from the completion
     return {"text": text}
+
+
+async def fetch_dependency_graph(repo_url: str) -> dict:
+    # Extract the owner and repo name from the URL using a regex pattern
+    match = re.match(r"https?://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+)", repo_url)
+    if not match:
+        raise HTTPException(400, detail="Invalid GitHub repository URL format.")
+
+    owner = match.group("owner")
+    repo = match.group("repo")
+
+    query = """
+    query {
+      repository(owner: "%s", name: "%s") {
+        dependencyGraphManifests {
+          totalCount
+          nodes {
+            blobPath
+            dependencies {
+              totalCount
+              nodes {
+                packageName
+                requirements
+              }
+            }
+          }
+        }
+      }
+    }
+    """ % (
+        owner,
+        repo,
+    )
+
+    headers = {
+        "Authorization": f"bearer {GITHUB_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    async with httpx.AsyncClient() as client:
+        print("we are in asyncclient")
+        response = await client.post(
+            "https://api.github.com/graphql", json={"query": query}, headers=headers
+        )
+        print("printed github1: ", response.json())
+        if response.status_code == 200:
+            print()
+            print("printed github2: ", response.json())
+            return response.json()
+        else:
+            raise HTTPException(
+                response.status_code,
+                detail="GitHub API responded with an error.",
+            )
+
+
+# @app.get("/repo-dependencies/{repo_url}")
+# async def repo_dependencies(repo_url: str):
+#     # Fetch and return the dependency graph using the full repo URL
+#     dependency_graph = await fetch_dependency_graph(repo_url)
+#     return dependency_graph
+
+
+@app.get("/repo-dependencies/{repo_url:path}")
+async def repo_dependencies(repo_url: str = Path(...)):
+    dependency_graph = await fetch_dependency_graph(f"{repo_url}")
+    return dependency_graph
