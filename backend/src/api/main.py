@@ -59,9 +59,6 @@ except FileNotFoundError:
 db = mongo_client[DATABASE_NAME]
 collection = db[COLLECTION_NAME]
 
-document = collection.find_one()
-print({"message": "Connected to MongoDB!", "data": document})
-
 
 api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
@@ -165,29 +162,8 @@ async def fetch_dependency_graph(repo_url: str) -> dict:
 
     owner = match.group("owner")
     repo = match.group("repo")
-
-    query = """
-    query {
-      repository(owner: "%s", name: "%s") {
-        dependencyGraphManifests {
-          totalCount
-          nodes {
-            blobPath
-            dependencies {
-              totalCount
-              nodes {
-                packageName
-                requirements
-              }
-            }
-          }
-        }
-      }
-    }
-    """ % (
-        owner,
-        repo,
-    )
+    print("owner", owner)
+    print("repo", repo)
 
     headers = {
         "Authorization": f"bearer {GITHUB_TOKEN}",
@@ -196,8 +172,9 @@ async def fetch_dependency_graph(repo_url: str) -> dict:
 
     async with httpx.AsyncClient() as client:
         print("we are in asyncclient")
-        response = await client.post(
-            "https://api.github.com/graphql", json={"query": query}, headers=headers
+        response = await client.get(
+            f"https://api.github.com/repos/{owner}/{repo}/dependency-graph/sbom",
+            headers=headers,
         )
         print("printed github1: ", response.json())
         if response.status_code == 200:
@@ -207,15 +184,7 @@ async def fetch_dependency_graph(repo_url: str) -> dict:
         else:
             raise HTTPException(
                 response.status_code,
-                detail="GitHub API responded with an error.",
             )
-
-
-# @app.get("/repo-dependencies/{repo_url}")
-# async def repo_dependencies(repo_url: str):
-#     # Fetch and return the dependency graph using the full repo URL
-#     dependency_graph = await fetch_dependency_graph(repo_url)
-#     return dependency_graph
 
 
 @app.get("/repo-dependencies/{repo_url:path}")
