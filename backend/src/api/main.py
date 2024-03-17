@@ -187,7 +187,63 @@ async def fetch_dependency_graph(repo_url: str) -> dict:
             )
 
 
+def sbom_to_graph(sbom_data):
+    initial_nodes = []
+    initial_edges = []
+    package_id_map = {}  # Mapping from SPDXID to a sequential ID for nodes
+
+    # Create nodes for each package
+    for index, package in enumerate(sbom_data["sbom"]["packages"], start=1):
+        node_id = str(index)
+        package_id_map[package["SPDXID"]] = node_id
+        initial_nodes.append(
+            {
+                "id": node_id,
+                "type": "custom",
+                "data": {
+                    "label": package["name"].split("/")[-1],
+                    "imgKey": "generic",
+                },  # Simplistic label and generic imgKey
+                "position": {"x": 100 * index, "y": 100},  # Positioning for simplicity
+                "isConnectable": True,
+            }
+        )
+
+    # Create edges based on the dependency relationships
+    for relationship in sbom_data["sbom"]["relationships"]:
+        if relationship["relationshipType"] == "DEPENDS_ON":
+            source_id = package_id_map.get(relationship["spdxElementId"])
+            target_id = package_id_map.get(relationship["relatedSpdxElement"])
+            if source_id and target_id:  # Ensure both source and target nodes exist
+                edge_id = f"e{source_id}-{target_id}"
+                initial_edges.append(
+                    {
+                        "id": edge_id,
+                        "source": source_id,
+                        "target": target_id,
+                        "type": "customEdge",
+                        "animated": True,
+                        "data": {"connection": "depends on"},  # Simple connection label
+                    }
+                )
+
+    # Compile the final structure for the graph
+    graph_output = {
+        "initialNodes": initial_nodes,
+        "initialEdges": initial_edges,
+    }
+    return graph_output
+
+
+# Assuming the provided input is stored in `sbom_input`
+# sbom_input = {...}  # The SBOM input structure as you've provided
+# graph_output = sbom_to_graph_visualization(sbom_input)
+# print(graph_output)
+
+
 @app.get("/repo-dependencies/{repo_url:path}")
 async def repo_dependencies(repo_url: str = Path(...)):
     dependency_graph = await fetch_dependency_graph(f"{repo_url}")
-    return dependency_graph
+    altered_graph = sbom_to_graph(dependency_graph)
+    print("altered_graph: ", altered_graph)
+    return altered_graph
