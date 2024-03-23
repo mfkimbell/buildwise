@@ -5,16 +5,16 @@ Buildwise
 An AI automated devops architecture visualizer. It's a React webapp that either accepts a Github repository link or a manual description of a project. It then prompts OpenAI API to create a graph in the format required by custom edges and nodes from ReactFlow. The graph is then visualized and can be edited as well as interacted with to learn more about how to project connects.
 
 ## Tools Used
-`OpenAI` For automatic generation of graphs based on user input
-`Docker` Containerization of the backend and frontend
-`TailwindCSS` Inline CSS tool
-`TypeScript` Typesafety for javascript
-`ReactFlow` Creation and display of the custom nodes and edges
-`ReactRouter` Rendering various pages
-`FASTapi` Creating an api
-`Uvicorn` Hosting the webserver that runs the API
-`Dotenv` Secret managment (openAI and github token)
-`ElkJS` Reoganizing the graph/nodes
+* `OpenAI` For automatic generation of graphs based on user input
+* `Docker` Containerization of the backend and frontend
+* `TailwindCSS` Inline CSS tool
+* `TypeScript` Typesafety for javascript
+* `ReactFlow` Creation and display of the custom nodes and edges
+* `ReactRouter` Rendering various pages
+* `FASTapi` Creating an api
+* `Uvicorn` Hosting the webserver that runs the API
+* `Dotenv` Secret managment (openAI and github token)
+* `ElkJS` Reoganizing the graph/nodes
 
 ## Homepage
 <img width="1515" alt="Screenshot 2024-03-23 at 1 07 53 PM" src="https://github.com/mfkimbell/buildwise/assets/107063397/d67b9924-3ab3-4948-b41e-4ec3c9b637da">
