@@ -16,8 +16,6 @@ An AI automated devops architecture visualizer. It's a React webapp that either 
 * `Dotenv` Secret managment (openAI and github token)
 * `ElkJS` Reoganizing the graph/nodes
 
-## Architechture
-<img width="868" alt="Screenshot 2024-03-23 at 1 37 14 PM" src="https://github.com/mfkimbell/buildwise/assets/107063397/94fcfb03-afe7-47f3-8ed0-3b1ba51f7ad1">
 
 
 ## Homepage
